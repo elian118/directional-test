@@ -13,10 +13,10 @@ export interface PostsParams {
   search?: string; // 제목/본문 검색어 (공백으로 여러 단어 입력 시 AND 매칭)
 }
 
-export interface PostsResponse {
+export interface PostListResponse {
   items: PostResponse[];
-  prevCursor: any;
-  nextCursor: any;
+  prevCursor: string | null;
+  nextCursor: string | null;
 }
 
 export const initialPostsParams: PostsParams = { limit: 10 };

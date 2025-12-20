@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { initialPostsParams, type PostsParams, type PostsResponse } from './interfaces/getPostsTypes.ts';
+import { initialPostsParams, type PostsParams, type PostListResponse } from './interfaces/getPostsTypes.ts';
 import { getPostsApi } from './postsApi.ts';
 import { useAsync } from '../../common/hooks/useAsync.ts';
 
 const PostsPage = () => {
-  const [posts, setPosts] = useState<PostsResponse | null>(null);
+  const [posts, setPosts] = useState<PostListResponse | null>(null);
   const [, setLoading] = useState<boolean>(false);
   const [params] = useState<PostsParams>(initialPostsParams);
 

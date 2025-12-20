@@ -1,4 +1,4 @@
-export interface DelPostResponse {
+export interface DeleteResponse {
   ok: boolean;
   deleted: number;
 }

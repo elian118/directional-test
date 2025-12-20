@@ -1,4 +1,4 @@
-export interface ASeries {
+export interface CoffeeDataPoint {
   cups: number;
   bugs: number;
   productivity: number;
@@ -6,9 +6,9 @@ export interface ASeries {
 
 export interface Team {
   team: string;
-  series: ASeries[];
+  series: CoffeeDataPoint[];
 }
 
-export interface CoffeeConsumptionByTeam {
+export interface CoffeeTeam {
   teams: Team[];
 }

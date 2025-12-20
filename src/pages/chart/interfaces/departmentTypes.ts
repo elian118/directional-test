@@ -1,13 +1,13 @@
-export interface Metric {
+export interface SnackImpactDataPoint {
   snacks: number;
   meetingsMissed: number;
   morale: number;
 }
 
-export interface Department {
+export interface SnackImpactDepartment {
   name: string;
-  metrics: Metric[];
+  metrics: SnackImpactDataPoint[];
 }
-export interface SnackImpactByDepartment {
-  departments: Department[];
+export interface SnackImpactResponse {
+  departments: SnackImpactDepartment[];
 }

@@ -1,6 +1,6 @@
 import type { Category } from '../postsConsts.ts';
 
-export interface PostParams {
+export interface PostCreateRequest {
   title: string;
   body: string;
   category: Category;
@@ -17,7 +17,7 @@ export interface PostResponse {
   createdAt: string; // '2025-12-20T01:46:19.350Z';
 }
 
-export const initPostParams: PostParams = {
+export const initPostParams: PostCreateRequest = {
   title: '',
   body: '',
   category: 'NOTICE',

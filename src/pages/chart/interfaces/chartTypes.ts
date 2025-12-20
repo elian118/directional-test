@@ -1,21 +1,21 @@
-export interface Coffee {
+export interface TopCoffeeBrandItem {
   brand: string;
   popularity: number;
 }
 
-export interface Snack {
+export interface PopularSnackBrandItem {
   name: string;
   share: number;
 }
 
-export interface WeeklyMood {
+export interface WeeklyMoodItem {
   week: string; // "2025-01-05",
   happy: number;
   tired: number;
   stressed: number;
 }
 
-export interface WeeklyWorkout {
+export interface WeeklyWorkoutItem {
   week: string; // "2025-01-05",
   running: number;
   cycling: number;
