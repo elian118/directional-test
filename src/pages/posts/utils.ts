@@ -5,7 +5,13 @@ export const updateColDeps = (showCols: PostLabels[]) => {
   return postLabels.map((item) => ({
     field: item.key,
     headerName: item.label,
-    sortable: item.key === 'title' || item.key === 'createdAt', // 제목, 작성일시만 정렬기능 사용
+    /*
+      Todo:
+        ag-grid 무한스크롤 적용 시 정렬 순서가 엉키게 됨
+         → server에서 정렬해서 보내도록 sort, order 파라미터를 전달해서 데이터 패치
+    */
+    // sortable: item.key === 'title' || item.key === 'createdAt',
+    sortable: false,
     resizable: true, // 컬럼 넓이 조절 가능
     minWidth: 180,
     filter: true,

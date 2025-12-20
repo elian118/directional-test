@@ -12,6 +12,7 @@ const Modal = () => {
         <div className="modal-action">
           {confirm && (
             <button
+              id="confirmModalBtn"
               className="btn btn-sm btn-outline"
               onClick={() => {
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions

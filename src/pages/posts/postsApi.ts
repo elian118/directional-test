@@ -19,13 +19,13 @@ export const getPostApi = async (postId: number): Promise<PostResponse> => {
 
 // 내 포스트 작성
 export const addPostApi = async (params: PostCreateRequest): Promise<PostResponse> => {
-  const response = await axiosInstance.post(`/posts`, { params });
+  const response = await axiosInstance.post(`/posts`, params);
   return response.data;
 };
 
 // 내 포스트 부분 업데이트
 export const updatePostApi = async (postId: number, params: PostCreateRequest): Promise<PostResponse> => {
-  const response = await axiosInstance.patch(`/posts/${postId}`, { params });
+  const response = await axiosInstance.patch(`/posts/${postId}`, params);
   return response.data;
 };
 

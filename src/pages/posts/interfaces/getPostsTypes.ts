@@ -6,7 +6,7 @@ export interface PostsParams {
   prevCursor?: string; // 이전 페이지용 커서(opaque). 이전 응답의 prevCursor를 그대로 전달. nextCursor와 동시 사용 불가.
   nextCursor?: string; // 다음 페이지용 커서(opaque). 이전 응답의 nextCursor를 그대로 전달. prevCursor와 동시 사용 불가.
   sort?: Sort; // 정렬 필드
-  order?: Order; //정렬 방향
+  order?: Order; // 정렬 방향
   category?: Category; // 구분
   from?: string; // $date-time
   to?: string; // $date-time

@@ -1,4 +1,4 @@
-import type { Category } from '../postsConsts.ts';
+import { Category } from '../postsConsts.ts';
 
 export interface PostCreateRequest {
   title: string;
@@ -22,4 +22,14 @@ export const initPostParams: PostCreateRequest = {
   body: '',
   category: 'NOTICE',
   tags: [],
+};
+
+export const initPostResponse: PostResponse = {
+  id: '',
+  userId: '',
+  title: '',
+  body: '',
+  category: Category.QNA,
+  tags: [],
+  createdAt: '',
 };
