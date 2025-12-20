@@ -1,4 +1,5 @@
-import type { Category, Order, Sort } from './postsConsts.ts';
+import type { Category, Order, Sort } from '../postsConsts.ts';
+import type { PostResponse } from './addPostTypes.ts';
 
 export interface PostsParams {
   limit: number; // 페이지 크기 (1~100) 기본값 10 설정
@@ -16,16 +17,6 @@ export interface PostsResponse {
   items: PostResponse[];
   prevCursor: any;
   nextCursor: any;
-}
-
-export interface PostResponse {
-  id: string;
-  userId: string;
-  title: string;
-  body: string;
-  category: Category;
-  tags: string[];
-  createdAt: string; // '2025-12-20T01:46:19.350Z';
 }
 
 export const initialPostsParams: PostsParams = { limit: 10 };

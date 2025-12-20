@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { initialPostsParams, type PostsParams, type PostsResponse } from './postsTypes.ts';
-import { postsApi } from './postsApi.ts';
+import { initialPostsParams, type PostsParams, type PostsResponse } from './interfaces/getPostsTypes.ts';
+import { getPostsApi } from './postsApi.ts';
 import { useAsync } from '../../common/hooks/useAsync.ts';
 
 const PostsPage = () => {
@@ -13,7 +13,7 @@ const PostsPage = () => {
       setLoading(true);
       try {
         // 💡 파라미터를 객체로 전달합니다. (토큰 헤더는 common.ts에서 자동 적용)
-        const res = await postsApi(params);
+        const res = await getPostsApi(params);
         setPosts(res);
       } catch (e) {
         console.error('API 호출 중 오류 발생', e);
