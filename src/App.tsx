@@ -6,12 +6,22 @@ import PostsPage from './pages/posts/PostsPage.tsx';
 import Home from './pages/home/Home.tsx';
 import Modal from './common/components/Modal.tsx';
 import GlobalLayer from './common/components/GlobalLayer.tsx';
+import { useDimension } from './common/hooks/useDimention.ts';
+import { useEffect, useRef, useState } from 'react';
 
 function App() {
+  const { winHeight } = useDimension();
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState<number>(0);
+
+  useEffect(() => {
+    if (headerRef.current) setHeaderHeight(headerRef.current.offsetHeight);
+  }, []);
+
   return (
     <GlobalLayer>
       <div className="w-screen h-screen dark:text-gray-100 bg-gray-100 dark:bg-gray-800">
-        <div className="navbar p-2 bg-base-300 shadow-md">
+        <div ref={headerRef} className="navbar p-2 bg-base-300 shadow-md">
           <div>
             <Link to="/" className="btn btn-ghost text-xl">
               FE Hiring Project
@@ -32,7 +42,7 @@ function App() {
             </ul>
           </div>
         </div>
-        <main className="p-4">
+        <main className="p-4" style={{ height: winHeight - headerHeight }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/board" element={<PostsPage />} />

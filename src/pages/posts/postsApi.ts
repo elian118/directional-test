@@ -43,6 +43,6 @@ export const delAllPostsApi = async (): Promise<DeleteResponse> => {
 
 // Mock 포스트 목록 조회
 export const getMockPostsApi = async (count: number): Promise<PostListResponse> => {
-  const response = await axiosInstance.delete(`/mock/posts/${count}`);
+  const response = await axiosInstance.get(`/mock/posts?count=${count}`);
   return response.data;
 };
