@@ -1,18 +1,4 @@
-export enum Sort {
-  'CreatedAt' = 'createdAt',
-  'Title' = 'title',
-}
-
-export enum Order {
-  ASC = 'asc',
-  DESC = 'desc',
-}
-
-export enum Category {
-  'NOTICE' = 'NOTICE',
-  'QNA' = 'QNA',
-  'FREE' = 'FREE',
-}
+import type { Category, Order, Sort } from './postsConsts.ts';
 
 export interface PostsParams {
   limit: number; // 페이지 크기 (1~100) 기본값 10 설정

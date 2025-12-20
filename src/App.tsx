@@ -1,9 +1,9 @@
 import './App.css';
 import { Link, Route, Routes } from 'react-router-dom';
 import ChartPage from './pages/chart/ChartPage.tsx';
-import NotFoundPage from './pages/NotFoundPage.tsx';
-import BoardPage from './pages/board/BoardPage.tsx';
-import Home from './pages/Home.tsx';
+import NotFoundPage from './pages/404/NotFoundPage.tsx';
+import PostsPage from './pages/posts/PostsPage.tsx';
+import Home from './pages/home/Home.tsx';
 
 function App() {
   return (
@@ -37,7 +37,7 @@ function App() {
         <Routes>
           {/* 👈 Route: 특정 경로와 컴포넌트를 매핑 */}
           <Route path="/" element={<Home />} />
-          <Route path="/board" element={<BoardPage />} />
+          <Route path="/board" element={<PostsPage />} />
           <Route path="/charts" element={<ChartPage />} />
           {/* 404 페이지 처리 (옵션) */}
           <Route path="*" element={<NotFoundPage />} />

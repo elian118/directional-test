@@ -4,10 +4,7 @@ import axios from 'axios';
 const AUTH_TOKEN: string = import.meta.env.VITE_AUTH_TOKEN;
 const BASE_URL: string = import.meta.env.VITE_BASE_URL;
 
-if (!AUTH_TOKEN) {
-  console.log(AUTH_TOKEN);
-  console.error('토큰이 확인되지 않습니다.');
-}
+if (!AUTH_TOKEN) console.error('토큰이 확인되지 않습니다.');
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: BASE_URL,
