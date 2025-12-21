@@ -33,13 +33,13 @@ export const getWeeklyWorkoutTrend = async (): Promise<WeeklyWorkoutItem[]> => {
 };
 
 // 멀티라인 차트용 팀별 커피 소비/버그/생산성 조회 목업
-export const getCoffeeConsumptionByTeam = async (): Promise<CoffeeTeam[]> => {
+export const getCoffeeConsumptionByTeam = async (): Promise<CoffeeTeam> => {
   const response = await axiosInstance.get(`/mock/coffee-consumption`);
   return response.data;
 };
 
 // 멀티라인 차트용 부서별 간식 영향 목업
-export const getSnackImpactByDepartment = async (): Promise<SnackImpactResponse[]> => {
+export const getSnackImpactByDepartment = async (): Promise<SnackImpactResponse> => {
   const response = await axiosInstance.get(`/mock/snack-impact`);
   return response.data;
 };

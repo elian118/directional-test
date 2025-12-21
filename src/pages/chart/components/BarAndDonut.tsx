@@ -15,9 +15,9 @@ const BarAndDonut = ({ dataSet }: BarAndDonutProps) => {
   const { winWidth } = useDimension();
   const [selectedData, setSelectedData] = useState<ColoredCoffeeBrandItem[] | ColoredPopularSnackBrandItem[]>([]);
 
-  const renderCustomBarLabel = ({ x, y, width, value }: any) => {
-    return <text x={x + width / 2} y={y} fill="#666" textAnchor="middle" dy={-6}>{`${value}%`}</text>;
-  };
+  const renderCustomBarLabel = ({ x, y, width, value }: any) => (
+    <text x={x + width / 2} y={y} fill="#666" textAnchor="middle" dy={-6}>{`${value}%`}</text>
+  );
 
   useEffect(() => {
     const coloredData: any[] = data?.map((e, idx) => ({

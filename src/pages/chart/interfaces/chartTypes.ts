@@ -9,7 +9,7 @@ export interface PopularSnackBrandItem {
 }
 
 export interface WeeklyMoodItem {
-  week: string; // "2025-01-05",
+  week: string;
   happy: number;
   tired: number;
   stressed: number;
