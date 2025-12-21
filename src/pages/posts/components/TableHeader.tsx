@@ -53,6 +53,7 @@ const TableHeader = ({ isShowCol, onChangeShowCol, onSearchSubmit }: TableHeader
     reset();
     onSearchSubmit(initialPostsParams);
   };
+
   return (
     <form
       id="postsSearchParamsForm"

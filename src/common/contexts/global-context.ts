@@ -6,6 +6,8 @@ export type ModalState = {
   body?: string | React.ReactNode;
   confirm?: boolean;
   action?: () => void;
+  noUseBottomSection?: boolean;
+  data?: any;
 };
 
 export type GlobalContextType = {
@@ -26,5 +28,4 @@ export const initGlobalContext: GlobalContextType = {
   modalState: [{ isOpen: false }, () => {}],
 };
 
-export const GlobalContext: React.Context<GlobalContextType> =
-  createContext(initGlobalContext);
+export const GlobalContext: React.Context<GlobalContextType> = createContext(initGlobalContext);

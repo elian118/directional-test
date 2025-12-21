@@ -29,15 +29,7 @@ const Select = (
       render={({ field }) => (
         <fieldset className="fieldset">
           {legend && <legend className="pl-2 fieldset-legend">{legend}</legend>}
-          <select
-            ref={ref}
-            name={name}
-            defaultValue=""
-            className="select"
-            {...rest}
-            value={field.value}
-            onChange={field.onChange}
-          >
+          <select ref={ref} name={name} className="select" value={field.value} onChange={field.onChange} {...rest}>
             {!noDepOpt && <option>전체</option>}
             {options.map((option) => (
               <option key={option.key} value={option.value}>

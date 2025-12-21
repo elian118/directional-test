@@ -12,7 +12,7 @@ export const getPostsApi = async (params: PostsParams): Promise<PostListResponse
 };
 
 // 내 포스트 단 건 조회
-export const getPostApi = async (postId: number): Promise<PostResponse> => {
+export const getPostApi = async (postId: string): Promise<PostResponse> => {
   const response = await axiosInstance.get(`/posts/${postId}`);
   return response.data;
 };
@@ -24,7 +24,7 @@ export const addPostApi = async (params: PostCreateRequest): Promise<PostRespons
 };
 
 // 내 포스트 부분 업데이트
-export const updatePostApi = async (postId: number, params: PostCreateRequest): Promise<PostResponse> => {
+export const updatePostApi = async (postId: string, params: PostCreateRequest): Promise<PostResponse> => {
   const response = await axiosInstance.patch(`/posts/${postId}`, params);
   return response.data;
 };

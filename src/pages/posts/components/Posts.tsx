@@ -1,7 +1,7 @@
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
-import { addPostApi, getPostsApi } from '../postsApi.ts';
-import { initPostParams, type PostCreateRequest, type PostResponse } from '../interfaces/addPostTypes.ts';
+import { getPostApi, getPostsApi } from '../postsApi.ts';
+import { initPostParams, type PostResponse } from '../interfaces/addPostTypes.ts';
 import { AllCommunityModule, InfiniteRowModelModule, ModuleRegistry } from 'ag-grid-community';
 import { updateColDeps } from '../utils.ts';
 import { type PostLabels, postLabels } from '../consts/postLabels.ts';
@@ -21,7 +21,6 @@ try {
 const Posts = () => {
   const { winHeight } = useDimension();
   const { openModal } = useModal();
-  const [post] = useState<PostCreateRequest>(initPostParams);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [params, setParams] = useState<PostsParams>(initialPostsParams);
   const [showCols, setShowCols] = useState<PostLabels[]>(postLabels); // 특정 컬럼 숨김/보기 제어
@@ -30,22 +29,23 @@ const Posts = () => {
 
   const fetchPosts = async (postsParams: PostsParams) => await getPostsApi(postsParams);
 
-  const addPost = async (post: PostCreateRequest) => {
-    try {
-      const response = await addPostApi(post);
-      console.log(`등록글: ${response.id}`);
-    } catch (e) {
-      console.error('API 호출 중 오류 발생', e);
-    }
+  const fetchPost = async (id: string) => {
+    console.log('callGetPostApi');
+    return await getPostApi(id);
   };
 
-  const openPostForm = () =>
+  const openPostDetail = async (id?: string) => {
+    let res;
+    if (id) res = await fetchPost(id);
+
     openModal({
-      title: '포스트 상세 조회',
+      title: id ? '포스트 상세 조회' : '새 포스트 작성',
       body: <PostForm />,
       confirm: true,
-      action: () => addPost(post),
+      noUseBottomSection: true,
+      data: id ? res : initPostParams,
     });
+  };
 
   const isShowCol = (key: keyof PostResponse): boolean =>
     showCols
@@ -149,12 +149,13 @@ const Posts = () => {
             infiniteInitialRowCount={1000}
             maxBlocksInCache={10}
             onGridReady={onGridReady}
+            onRowClicked={async (e) => await openPostDetail(e.data.id)}
             loading={isLoading}
           />
         </div>
       }
       <div className="mt-2 flex flex-row gap-2">
-        <button className="btn btn-primary" onClick={openPostForm}>
+        <button className="btn btn-primary" onClick={() => openPostDetail()}>
           새 글 쓰기
         </button>
         {/*<button className="btn btn-primary" onClick={addSamplePosts}>*/}
