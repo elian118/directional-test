@@ -49,7 +49,7 @@
 
 - 아래 명령으로 실행
   ```shell
-  yarn dev
+  npm run dev // 또는 yarn dev
   ```
 - 로그인
   - 메일에서 공유된 계정 정보로 홈에서 로그인
