@@ -1,6 +1,6 @@
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
-import { getPostApi, getPostsApi } from '../postsApi.ts';
+import { delAllPostsApi, getPostApi, getPostsApi } from '../postsApi.ts';
 import { initPostParams, type PostResponse } from '../interfaces/addPostTypes.ts';
 import { AllCommunityModule, InfiniteRowModelModule, ModuleRegistry } from 'ag-grid-community';
 import { updateColDeps } from '../utils.ts';
@@ -28,10 +28,15 @@ const Posts = () => {
   const [gridApi, setGridApi] = useState<any>(null);
 
   const fetchPosts = async (postsParams: PostsParams) => await getPostsApi(postsParams);
+  const fetchPost = async (id: string) => await getPostApi(id);
 
-  const fetchPost = async (id: string) => {
-    console.log('callGetPostApi');
-    return await getPostApi(id);
+  // 전체 삭제
+  const delAllPosts = async () => {
+    try {
+      await delAllPostsApi();
+    } catch (e: any) {
+      console.error(e);
+    }
   };
 
   const openPostDetail = async (id?: string) => {
@@ -154,7 +159,10 @@ const Posts = () => {
           />
         </div>
       }
-      <div className="mt-2 flex flex-row gap-2">
+      <div className="mt-2 flex flex-row justify-between items-center gap-2">
+        <button className="btn btn-error" onClick={() => delAllPosts()}>
+          모두 삭제
+        </button>
         <button className="btn btn-primary" onClick={() => openPostDetail()}>
           새 글 쓰기
         </button>

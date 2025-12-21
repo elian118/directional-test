@@ -30,7 +30,7 @@ export const updatePostApi = async (postId: string, params: PostCreateRequest): 
 };
 
 // 내 포스트 삭제(단건)
-export const delPostApi = async (postId: number): Promise<DeleteResponse> => {
+export const delPostApi = async (postId: string): Promise<DeleteResponse> => {
   const response = await axiosInstance.delete(`/posts/${postId}`);
   return response.data;
 };

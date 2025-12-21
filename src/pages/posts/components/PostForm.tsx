@@ -8,7 +8,7 @@ import { initPostParams, type PostCreateRequest } from '../interfaces/addPostTyp
 import { useModal } from '../../../common/hooks/useModal.ts';
 import Btn from '../../../common/components/Btn.tsx';
 import Textarea from '../../../common/components/Textarea.tsx';
-import { addPostApi, updatePostApi } from '../postsApi.ts';
+import { addPostApi, delPostApi, updatePostApi } from '../postsApi.ts';
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 
@@ -16,7 +16,7 @@ const PostForm = () => {
   const { modal, resetModal } = useModal();
   const { data } = modal;
   const { id, userId, createdAt, ...restData } = data;
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userIdParam, setUserIdParam] = useState<string>('');
   const [createdAtParam, setCreatedAtParam] = useState<string>('');
 
@@ -30,17 +30,39 @@ const PostForm = () => {
     defaultValues: id !== undefined ? restData : initPostParams,
   });
 
-  const handleReset = () => {
-    reset();
+  const handleReset = () => reset();
+
+  const closeModal = () => {
+    resetModal(); // 모달 상태 초기화 및 닫기
+    document.getElementById('closeModalBtn')?.click();
+    location.reload();
   };
 
   const updatePost = async (post: PostCreateRequest, id?: string) => {
     try {
+      setIsLoading(true);
       const response = id ? await updatePostApi(id, post) : await addPostApi(post);
       console.log(`등록글: ${response.id}`);
       return response.id;
     } catch (e) {
       console.error('API 호출 중 오류 발생', e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const delPost = async (id: string) => {
+    try {
+      setIsLoading(true);
+      const response = await delPostApi(id);
+      console.log(`삭제글: ${id}`);
+      console.log(`삭제글: ${response}`);
+      closeModal();
+      return response;
+    } catch (e) {
+      console.error('API 호출 중 오류 발생', e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -55,19 +77,15 @@ const PostForm = () => {
     };
     // api 호출
     const postId = await updatePost(newParams, id);
-    if (postId !== undefined) {
-      resetModal(); // 모달 상태 초기화 및 닫기
-      document.getElementById('closeModalBtn')?.click();
-      location.reload();
-    }
+    if (postId !== undefined) closeModal();
   };
 
   useEffect(() => {
-    const { id, userId, createdAt, ...restData } = data;
+    const { userId, createdAt, ...restData } = data;
     // 모달이 열린 채로 data가 변경될 때 폼 내용 갱신
     reset(restData);
-    userId && setUserIdParam(userId);
-    createdAt && setCreatedAtParam(format(createdAt, 'yyyy.MM.dd HH:mm:ss'));
+    if (userId) setUserIdParam(userId);
+    if (createdAt) setCreatedAtParam(format(createdAt, 'yyyy.MM.dd HH:mm:ss'));
   }, [data, reset]);
 
   return (
@@ -119,8 +137,11 @@ const PostForm = () => {
           placeholder="해시태그 입력"
         />
         <div className="mt-8 flex flex-row gap-2 justify-end items-center">
+          <Btn role="button" className="btn btn-sm btn-error" isLoading={isLoading} onClick={() => delPost(id)}>
+            삭제
+          </Btn>
           <Btn
-            className={`mb-2 p-2 flex justify-center items-center gap-2 btn btn-sm btn-neutral ${id ? 'hidden' : ''}`}
+            className={`p-2 flex justify-center items-center gap-2 btn btn-sm btn-neutral ${id ? 'hidden' : ''}`}
             role="button"
             isLoading={false}
             onClick={handleReset}
@@ -128,7 +149,7 @@ const PostForm = () => {
             초기화
           </Btn>
           <Btn
-            className="mb-2 p-2 flex justify-center items-center gap-2 btn btn-sm btn-primary"
+            className="p-2 flex justify-center items-center gap-2 btn btn-sm btn-primary"
             role="submit"
             isLoading={isSubmitting}
           >
