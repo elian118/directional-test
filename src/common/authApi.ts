@@ -1,4 +1,4 @@
-import axiosInstance from './consts.ts';
+import axiosInstance from './getAuthToken.ts';
 import type { LoginRequest } from './types/LoginRequest.ts';
 import type { LoginResponse } from './types/LoginResponse.ts';
 

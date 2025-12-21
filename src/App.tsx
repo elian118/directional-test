@@ -8,7 +8,7 @@ import Modal from './common/components/Modal.tsx';
 import GlobalLayer from './common/components/GlobalLayer.tsx';
 import { useDimension } from './common/hooks/useDimention.ts';
 import { useEffect, useRef, useState } from 'react';
-import { getAuthToken } from './common/consts.ts';
+import { getAuthToken } from './common/getAuthToken.ts';
 
 function App() {
   const { winHeight } = useDimension();

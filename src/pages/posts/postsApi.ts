@@ -1,4 +1,4 @@
-import axiosInstance from '../../common/consts.ts';
+import axiosInstance from '../../common/getAuthToken.ts';
 import type { PostsParams, PostListResponse } from './interfaces/getPostsTypes.ts';
 import type { PostCreateRequest, PostResponse } from './interfaces/addPostTypes.ts';
 import type { DeleteResponse } from '../../common/types/DeleteResponse.ts';

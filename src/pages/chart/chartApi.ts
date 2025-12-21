@@ -1,4 +1,4 @@
-import axiosInstance from '../../common/consts.ts';
+import axiosInstance from '../../common/getAuthToken.ts';
 import type {
   TopCoffeeBrandItem,
   PopularSnackBrandItem,

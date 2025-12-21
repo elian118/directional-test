@@ -45,7 +45,7 @@ const Login = () => {
           legend="이메일"
           type="text"
           errors={errors.email?.message}
-          placeholder="제목 또는 내용 입력"
+          placeholder="이메일"
         />
         <Input
           name="password"
@@ -53,7 +53,7 @@ const Login = () => {
           legend="비밀번호"
           type="password"
           errors={errors.password?.message}
-          placeholder="제목 또는 내용 입력"
+          placeholder="비밀번호"
         />
       </div>
       <Btn

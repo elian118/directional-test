@@ -33,4 +33,24 @@ const axiosInstance: AxiosInstance = axios.create({
   },
 });
 
+// Todo: 응답 인터셉터 추가
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//
+//   // 오류 응답 처리
+//   (error) => {
+//     // 서버에서 토큰 만료(일반적으로 401) 확인
+//     if (error.response && error.response.status === 401) {
+//       console.error('인증 토큰 만료 또는 인증 실패. 로그인 페이지로 리다이렉션합니다.');
+//
+//       // 로컬 스토리지의 만료된 토큰 정보 삭제
+//       if (typeof window !== 'undefined') localStorage.removeItem('user');
+//       if (typeof window !== 'undefined') window.location.href = '/'; // 홈으로
+//     }
+//
+//     // 다른 모든 오류는 프로미스 거부
+//     return Promise.reject(error);
+//   },
+// );
+
 export default axiosInstance;
