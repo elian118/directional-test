@@ -11,6 +11,8 @@ import TableHeader from './TableHeader.tsx';
 import PostForm from './PostForm.tsx';
 import { initialPostsParams, type PostsParams } from '../interfaces/getPostsTypes.ts';
 import { useAsync } from '../../../common/hooks/useAsync.ts';
+import { useLocalStorage } from '../../../common/hooks/useLocalStorage.ts';
+import { initLoginResponse } from '../../../common/types/LoginResponse.ts';
 
 try {
   ModuleRegistry.registerModules([AllCommunityModule, InfiniteRowModelModule]);
@@ -21,6 +23,7 @@ try {
 const Posts = () => {
   const { winHeight } = useDimension();
   const { openModal } = useModal();
+  const [user] = useLocalStorage('user', initLoginResponse);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [params, setParams] = useState<PostsParams>(initialPostsParams);
   const [showCols, setShowCols] = useState<PostLabels[]>(postLabels); // 특정 컬럼 숨김/보기 제어
@@ -137,7 +140,7 @@ const Posts = () => {
 
   useAsync(async () => {
     setColDefs(updateColDeps(showCols));
-  }, [showCols, params]);
+  }, [showCols, params, user]);
 
   return (
     <div className="w-full flex flex-col gap-2">

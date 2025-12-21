@@ -1,5 +1,5 @@
 import './App.css';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import ChartPage from './pages/chart/ChartPage.tsx';
 import NotFoundPage from './pages/404/NotFoundPage.tsx';
 import PostsPage from './pages/posts/PostsPage.tsx';
@@ -8,15 +8,25 @@ import Modal from './common/components/Modal.tsx';
 import GlobalLayer from './common/components/GlobalLayer.tsx';
 import { useDimension } from './common/hooks/useDimention.ts';
 import { useEffect, useRef, useState } from 'react';
+import { getAuthToken } from './common/consts.ts';
 
 function App() {
   const { winHeight } = useDimension();
+  const navigate = useNavigate();
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState<number>(0);
+  // const [user, setUser] = useLocalStorage<LoginResponse>('user', initLoginResponse);
 
   useEffect(() => {
     if (headerRef.current) setHeaderHeight(headerRef.current.offsetHeight);
-  }, []);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    !getAuthToken() ? navigate('/') : navigate('/posts');
+  }, [navigate]);
+
+  const logout = () => {
+    localStorage.removeItem('user');
+    navigate('/');
+  };
 
   return (
     <GlobalLayer>
@@ -41,11 +51,15 @@ function App() {
               </li>
             </ul>
           </div>
+          <button style={{ display: getAuthToken() ? 'flex' : 'none' }} className="btn btn-ghost" onClick={logout}>
+            로그아웃
+          </button>
         </div>
+
         <main className="p-4" style={{ height: winHeight - headerHeight }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/board" element={<PostsPage />} />
+            <Route path="/posts" element={<PostsPage />} />
             <Route path="/charts" element={<ChartPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
