@@ -9,7 +9,7 @@ import { useModal } from '../../../common/hooks/useModal.ts';
 import Btn from '../../../common/components/Btn.tsx';
 import Textarea from '../../../common/components/Textarea.tsx';
 import { addPostApi, delPostApi, updatePostApi } from '../postsApi.ts';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { format } from 'date-fns';
 
 const PostForm = () => {
@@ -19,6 +19,8 @@ const PostForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userIdParam, setUserIdParam] = useState<string>('');
   const [createdAtParam, setCreatedAtParam] = useState<string>('');
+  const [inputTags, setInputTags] = useState<string>('');
+  const [tags, setTags] = useState<string[]>([]);
 
   const {
     control,
@@ -30,10 +32,44 @@ const PostForm = () => {
     defaultValues: id !== undefined ? restData : initPostParams,
   });
 
-  const handleReset = () => reset();
+  const findTags = (val: string) => {
+    if (!val) return [];
+
+    return val
+      .replace(/,\s*/g, ' ') // 컴마와 뒤따르는 공백을 하나의 공백으로 치환
+      .replace(/\s{2,}/g, ' ') // 두 칸 이상의 공백을 하나의 공백으로 치환
+      .trim()
+      .replace(/[^\w\s가-힣]/g, '') // 태그에 허용되는 문자만 남기고 모두 제거
+      .split(' ')
+      .filter((tag) => tag.length > 0);
+  };
+
+  const inputTagsRef = useRef<HTMLInputElement>(null);
+
+  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // 폼 제출 방지 (기본 동작 막기)
+      console.log(tags);
+      const currentInput = event.currentTarget.value;
+
+      if (currentInput.trim() === '') return;
+
+      const newTags = findTags(currentInput);
+      if (newTags.length > 0) setTags([...new Set([...tags, ...newTags])]);
+
+      setInputTags('');
+      inputTagsRef.current?.focus();
+    }
+  }, []);
+
+  const handleReset = () => {
+    reset();
+    setTags([]);
+  };
 
   const closeModal = () => {
     resetModal(); // 모달 상태 초기화 및 닫기
+    setTags([]);
     document.getElementById('closeModalBtn')?.click();
     location.reload();
   };
@@ -67,13 +103,13 @@ const PostForm = () => {
   };
 
   const onSubmit: SubmitHandler<PostFormSchemaParams> = async (data) => {
-    const { title, body, category, tags } = data;
+    const { title, body, category } = data;
     const newParams: PostCreateRequest = {
       ...initPostParams,
       title,
       body,
       category,
-      tags: tags ?? [],
+      tags: tags,
     };
     // api 호출
     const postId = await updatePost(newParams, id);
@@ -81,11 +117,12 @@ const PostForm = () => {
   };
 
   useEffect(() => {
-    const { userId, createdAt, ...restData } = data;
+    const { userId, createdAt, tags, ...restData } = data;
     // 모달이 열린 채로 data가 변경될 때 폼 내용 갱신
     reset(restData);
     if (userId) setUserIdParam(userId);
     if (createdAt) setCreatedAtParam(format(createdAt, 'yyyy.MM.dd HH:mm:ss'));
+    if (tags) setTags(tags);
   }, [data, reset]);
 
   return (
@@ -128,13 +165,28 @@ const PostForm = () => {
           errors={errors.category?.message}
           options={Object.keys(Category).map((e) => ({ key: e, label: e }))}
         />
+        <div className="mt-2 p-2 flex flex-row gap-2 items-center">
+          {tags.map((tag, idx) => (
+            <div
+              className="badge badge-sm badge-info cursor-pointer"
+              onClick={() => setTags(tags.filter((t) => t !== tag))}
+              key={`${tag}-${idx}`}
+            >
+              {tag}
+            </div>
+          ))}
+        </div>
         <Input
+          ref={inputTagsRef}
           name="tags"
           control={control}
           legend="태그"
           type="text"
           errors={errors.tags?.message}
           placeholder="해시태그 입력"
+          value={inputTags}
+          onChange={(e) => setInputTags(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <div className="mt-8 flex flex-row gap-2 justify-end items-center">
           <Btn
