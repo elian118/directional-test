@@ -7,9 +7,11 @@ import type {
   WeeklyMoodItem,
   WeeklyWorkoutItem,
 } from '../interfaces/chartTypes.ts';
-import { dataSet } from '../consts/dataSet.ts';
+import { dataSet, seriesDataSet } from '../consts/dataSet.ts';
 import StackedBarAndArea from './StackedBarAndArea.tsx';
 import MultiLine from './MultiLine.tsx';
+import type { CoffeeTeam } from '../interfaces/teamTypes.ts';
+import type { SnackImpactResponse } from '../interfaces/departmentTypes.ts';
 
 const initChartData: ChartData = {
   title: '',
@@ -35,8 +37,15 @@ export interface ChartData {
   yLabel2?: string;
   yLabel3?: string;
   data: TopCoffeeBrandItem[] | PopularSnackBrandItem[] | WeeklyMoodItem[] | WeeklyWorkoutItem[];
-  // | CoffeeTeam
-  // | SnackImpactResponse;
+}
+
+export interface SeriesChartData {
+  title: string;
+  xKey: string;
+  yKey: string;
+  xLabel: string;
+  yLabel: string;
+  data: CoffeeTeam | SnackImpactResponse;
 }
 
 const ChartContainer = () => {
@@ -47,12 +56,18 @@ const ChartContainer = () => {
     const { api, ...rest } = dataSet[dataSetIdx];
     const res = await api();
     setData({ ...rest, data: res });
-    // console.log('{ ...rest, data: res }');
-    // console.log({ ...rest, data: res });
+  };
+
+  const getSeriesData = async () => {
+    const { api, ...rest } = seriesDataSet[dataSetIdx - 4];
+    const res = await api();
+    console.log('{ ...rest, data: res }');
+    console.log({ ...rest, data: res });
   };
 
   useAsync(async () => {
-    await getData();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    dataSetIdx < 4 ? await getData() : await getSeriesData();
   }, [dataSetIdx]);
 
   return (

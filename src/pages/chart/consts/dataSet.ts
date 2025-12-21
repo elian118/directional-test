@@ -1,4 +1,11 @@
-import { getPopSnackBrands, getTopCoffeeBrands, getWeeklyMoodTrend, getWeeklyWorkoutTrend } from '../chartApi.ts';
+import {
+  getCoffeeConsumptionByTeam,
+  getPopSnackBrands,
+  getSnackImpactByDepartment,
+  getTopCoffeeBrands,
+  getWeeklyMoodTrend,
+  getWeeklyWorkoutTrend,
+} from '../chartApi.ts';
 
 export const dataSet = [
   {
@@ -41,28 +48,31 @@ export const dataSet = [
     yLabel2: '러닝',
     yLabel3: '스트레칭',
   },
-  // {
-  //   title: 'Coffee Team',
-  //   api: getCoffeeConsumptionByTeam,
-  //   xKey: 'team',
-  //   yKey: 'productivity',
-  //   yKey2: 'cups',
-  //   yKey3: 'bugs',
-  //   xLabel: '팀',
-  //   yLabel: '생산성',
-  //   yLabel2: '컵',
-  //   yLabel3: '버그',
-  // },
-  // {
-  //   title: 'Snack Impact Response',
-  //   api: getSnackImpactByDepartment,
-  //   xKey: 'team',
-  //   yKey: 'morale',
-  //   yKey2: 'meetingsMissed',
-  //   yKey3: 'snacks',
-  //   xLabel: '팀',
-  //   yLabel: '사기',
-  //   yLabel2: '미팅불참',
-  //   yLabel3: '스택',
-  // },
+];
+
+export const seriesDataSet = [
+  {
+    title: 'Coffee Team',
+    api: getCoffeeConsumptionByTeam,
+    xKey: 'team',
+    yKey: 'productivity',
+    yKey2: 'cups',
+    yKey3: 'bugs',
+    xLabel: '팀',
+    yLabel: '생산성',
+    yLabel2: '컵',
+    yLabel3: '버그',
+  },
+  {
+    title: 'Snack Impact Response',
+    api: getSnackImpactByDepartment,
+    xKey: 'team',
+    yKey: 'morale',
+    yKey2: 'meetingsMissed',
+    yKey3: 'snacks',
+    xLabel: '팀',
+    yLabel: '사기',
+    yLabel2: '미팅불참',
+    yLabel3: '스택',
+  },
 ];
