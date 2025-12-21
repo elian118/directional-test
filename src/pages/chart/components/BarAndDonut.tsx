@@ -1,38 +1,38 @@
-import { useAsync } from '../../../common/hooks/useAsync.ts';
-import { useState } from 'react';
-import type { TopCoffeeBrandItem } from '../interfaces/chartTypes.ts';
-import { getTopCoffeeBrands } from '../chartApi.ts';
+import { useEffect, useState } from 'react';
 import { Bar, BarChart, Cell, Label, PieChart, Tooltip, XAxis, YAxis } from 'recharts';
-import { grayColors, tealColors } from '../colors.ts';
+import { grayColors, tealColors } from '../consts/colors.ts';
 import { useDimension } from '../../../common/hooks/useDimention.ts';
 import { DonutPie } from './DonutPie.tsx';
+import type { ColoredCoffeeBrandItem, ColoredPopularSnackBrandItem } from '../interfaces/dataTypes.ts';
+import type { ChartData } from './ChartContainer.tsx';
 
-export interface ColoredCoffeeBrandItem extends TopCoffeeBrandItem {
-  color: string; // TopCoffeeBrandItem의 모든 속성을 상속받고 color만 추가
+interface BarAndDonutProps {
+  dataSet: ChartData;
 }
 
-const TopCoffeeBrand = () => {
+const BarAndDonut = ({ dataSet }: BarAndDonutProps) => {
+  const { title, xKey, yKey, xLabel, yLabel, data } = dataSet;
   const { winWidth } = useDimension();
-  const [data, setData] = useState<ColoredCoffeeBrandItem[]>([]);
-
-  const getData = async () => {
-    const res = await getTopCoffeeBrands();
-    setData(res.map((e, idx) => ({ ...e, color: tealColors[idx] })));
-  };
+  const [selectedData, setSelectedData] = useState<ColoredCoffeeBrandItem[] | ColoredPopularSnackBrandItem[]>([]);
 
   const renderCustomBarLabel = ({ x, y, width, value }: any) => {
     return <text x={x + width / 2} y={y} fill="#666" textAnchor="middle" dy={-6}>{`${value}%`}</text>;
   };
 
-  useAsync(async () => {
-    await getData();
-  }, []);
+  useEffect(() => {
+    const coloredData: any[] = data?.map((e, idx) => ({
+      ...e,
+      color: tealColors[tealColors.length - 5 - idx],
+    }));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSelectedData(coloredData);
+  }, [dataSet]);
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 justify-center">
       <div className="w-1/2 p-4">
         <div className="w-full flex items-center justify-center">
-          <h2 className="mb-4">Top Coffee Brand</h2>
+          <h2 className="mb-4">{title}</h2>
         </div>
         <BarChart
           width={winWidth * 0.45}
@@ -41,13 +41,19 @@ const TopCoffeeBrand = () => {
           margin={{ top: 20, bottom: 20, left: 20, right: 20 }}
         >
           <XAxis
-            dataKey="brand"
-            label={{ position: 'insideBottomRight', value: '커피 브랜드', offset: -10, dx: -10 }}
+            dataKey={xKey}
+            label={{
+              position: 'insideBottomRight',
+              value: xLabel,
+              offset: -10,
+              dx: -10,
+              dy: 5,
+            }}
           />
-          <YAxis dataKey="popularity" label={{ position: 'insideTopLeft', value: '인기도', angle: -90, dy: 40 }} />
-          <Bar dataKey="popularity" fill="#8884d8" label={renderCustomBarLabel}>
+          <YAxis dataKey={yKey} label={{ position: 'insideTopLeft', value: yLabel, angle: -90, dy: 40 }} />
+          <Bar dataKey={yKey} fill="#8884d8" label={renderCustomBarLabel}>
             {data.map((_, idx) => (
-              <Cell key={`cell-${idx}`} fill={tealColors[idx % tealColors.length]} />
+              <Cell key={`cell-${idx}`} fill={tealColors[(tealColors.length - 5 - idx) % tealColors.length]} />
             ))}
           </Bar>
           <Tooltip
@@ -65,9 +71,9 @@ const TopCoffeeBrand = () => {
       </div>
       <div className="w-1/2 p-4">
         <PieChart style={{ height: 300, width: winWidth * 0.45 }}>
-          <DonutPie data={data} />
+          <DonutPie xKey={xKey} yKey={yKey} selectedData={selectedData} />
           <Label position="center" fill={grayColors[0]}>
-            Top Coffee Brand
+            {title}
           </Label>
           <Tooltip
             contentStyle={{
@@ -87,4 +93,4 @@ const TopCoffeeBrand = () => {
   );
 };
 
-export default TopCoffeeBrand;
+export default BarAndDonut;
