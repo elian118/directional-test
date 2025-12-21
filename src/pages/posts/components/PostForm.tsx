@@ -137,7 +137,12 @@ const PostForm = () => {
           placeholder="해시태그 입력"
         />
         <div className="mt-8 flex flex-row gap-2 justify-end items-center">
-          <Btn role="button" className="btn btn-sm btn-error" isLoading={isLoading} onClick={() => delPost(id)}>
+          <Btn
+            role="button"
+            className={`btn btn-sm btn-error ${id ? '' : 'hidden'}`}
+            isLoading={isLoading}
+            onClick={() => delPost(id)}
+          >
             삭제
           </Btn>
           <Btn
