@@ -1,6 +1,6 @@
 export const Sort = {
-  CreatedAt: 'createdAt',
   Title: 'title',
+  CreatedAt: 'createdAt',
 };
 
 export const Order = {
