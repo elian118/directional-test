@@ -59,10 +59,12 @@ const ChartContainer = () => {
   };
 
   const getSeriesData = async () => {
-    const { api, ...rest } = seriesDataSet[dataSetIdx - 4];
+    const { api, target, ...rest } = seriesDataSet[dataSetIdx - 4];
     const res = await api();
-    console.log('{ ...rest, data: res }');
-    console.log({ ...rest, data: res });
+    // @ts-ignore
+    const data = res[target];
+    console.log('data', data);
+    setData({ ...rest, data });
   };
 
   useAsync(async () => {
@@ -78,10 +80,10 @@ const ChartContainer = () => {
           <select
             className="select"
             onChange={async (e) => {
-              setDataSetIdx(dataSet.findIndex((d) => d.title === e.target.value));
+              setDataSetIdx([...dataSet, ...seriesDataSet].findIndex((d) => d.title === e.target.value));
             }}
           >
-            {dataSet.map((opt) => (
+            {[...dataSet, ...seriesDataSet].map((opt) => (
               <option key={opt.title} value={opt.title}>
                 {opt.title}
               </option>
