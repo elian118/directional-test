@@ -27,11 +27,11 @@ const TableHeader = ({ isShowCol, onChangeShowCol, onSearchSubmit }: TableHeader
   const {
     control,
     handleSubmit,
-    // reset,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<PostsSearchParams>({
     resolver: zodResolver(postsSearchParamsSchema),
-    initPostsSearchParams,
+    defaultValues: initPostsSearchParams,
   });
 
   const onSubmit: SubmitHandler<PostsSearchParams> = (data) => {
@@ -50,8 +50,7 @@ const TableHeader = ({ isShowCol, onChangeShowCol, onSearchSubmit }: TableHeader
   };
 
   const handleReset = () => {
-    // reset(); // FIXME: 제대로 클리어 안 됨
-    location.reload(); // 대체
+    reset();
     onSearchSubmit(initialPostsParams);
   };
   return (
