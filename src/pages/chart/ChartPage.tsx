@@ -1,5 +1,11 @@
+import ChartContainer from './components/ChartContainer.tsx';
+
 const ChartPage = () => {
-  return <div></div>;
+  return (
+    <div>
+      <ChartContainer />
+    </div>
+  );
 };
 
 export default ChartPage;

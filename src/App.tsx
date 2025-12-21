@@ -19,7 +19,6 @@ function App() {
 
   useEffect(() => {
     if (headerRef.current) setHeaderHeight(headerRef.current.offsetHeight);
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     if (!getAuthToken()) navigate('/');
   }, [navigate]);
 
