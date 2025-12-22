@@ -63,12 +63,10 @@ const ChartContainer = () => {
     const res = await api();
     // @ts-ignore
     const data = res[target];
-    console.log('data', data);
     setData({ ...rest, data });
   };
 
   useAsync(async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     dataSetIdx < 4 ? await getData() : await getSeriesData();
   }, [dataSetIdx]);
 
