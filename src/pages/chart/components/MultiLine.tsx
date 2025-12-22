@@ -56,9 +56,9 @@ const MultiLine = ({ dataSet }: MultiLineProps) => {
                 data={getSeriesData(depart)}
                 margin={{
                   top: 10,
-                  right: idx === 0 ? 10 : 71,
-                  left: idx === 0 ? 10 : 55,
-                  bottom: idx === 0 ? 10 : 65,
+                  right: idx === 0 ? 10 : 62,
+                  left: idx === 0 ? 10 : 71,
+                  bottom: idx === 0 ? 17 : 65,
                 }}
               >
                 {idx === 0 && <CartesianGrid strokeDasharray="3 3" />}
@@ -121,7 +121,7 @@ const MultiLine = ({ dataSet }: MultiLineProps) => {
                 />
               </LineChart>
 
-              <div className="mt-4 w-full flex justify-center items-center gap-10">
+              <div className="mt-2 w-full flex justify-center items-center gap-10">
                 <h2
                   className={`${idx !== 0 ? 'invisible' : ''}`}
                   style={{ color: departColors[idx] }}
