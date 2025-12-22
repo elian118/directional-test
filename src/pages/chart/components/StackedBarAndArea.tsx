@@ -1,19 +1,45 @@
 import type { ChartData } from './ChartContainer.tsx';
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { useDimension } from '../../../common/hooks/useDimention.ts';
 import { useEffect, useState } from 'react';
 import { indigoColors } from '../consts/colors.ts';
-import type { ColoredWeeklyMoodItem, ColoredWeeklyWorkoutItem } from '../interfaces/dataTypes.ts';
+import type {
+  ColoredWeeklyMoodItem,
+  ColoredWeeklyWorkoutItem,
+} from '../interfaces/dataTypes.ts';
 import CustomizedLabel from './CustomizedLabel.tsx';
+import StyledTooltip from './StyledTooltip.tsx';
 
 interface StackedBarAndAreaProps {
   dataSet: ChartData;
 }
 
 const StackedBarAndArea = ({ dataSet }: StackedBarAndAreaProps) => {
-  const { title, xKey, yKey, yKey2, yKey3, xLabel, yLabel, yLabel2, yLabel3, data } = dataSet;
+  const {
+    title,
+    xKey,
+    yKey,
+    yKey2,
+    yKey3,
+    xLabel,
+    yLabel,
+    yLabel2,
+    yLabel3,
+    data,
+  } = dataSet;
   const { winWidth, winHeight } = useDimension();
-  const [selectedData, setSelectedData] = useState<ColoredWeeklyMoodItem[] | ColoredWeeklyWorkoutItem[]>([]);
+  const [selectedData, setSelectedData] = useState<
+    ColoredWeeklyMoodItem[] | ColoredWeeklyWorkoutItem[]
+  >([]);
 
   useEffect(() => {
     const coloredData: any[] = data.map((e, idx) => ({
@@ -48,19 +74,17 @@ const StackedBarAndArea = ({ dataSet }: StackedBarAndAreaProps) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={xKey} label={{ position: 'insideBottomRight', value: xLabel, dx: -5, dy: 20 }} />
-          <YAxis width="auto" domain={[0, 120]} />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              borderColor: '#333',
-              borderRadius: '5px',
-            }}
-            labelStyle={{
-              color: '#0056b3',
-              fontWeight: 'bold',
+          <XAxis
+            dataKey={xKey}
+            label={{
+              position: 'insideBottomRight',
+              value: xLabel,
+              dx: -5,
+              dy: 20,
             }}
           />
+          <YAxis width="auto" domain={[0, 120]} />
+          <StyledTooltip />
           <Legend />
           <Bar
             dataKey={yKey}
@@ -107,19 +131,17 @@ const StackedBarAndArea = ({ dataSet }: StackedBarAndAreaProps) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={xKey} label={{ position: 'insideBottomRight', value: xLabel, dx: -5, dy: 20 }} />
-          <YAxis width="auto" domain={[0, 120]} />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              borderColor: '#333',
-              borderRadius: '5px',
-            }}
-            labelStyle={{
-              color: '#0056b3',
-              fontWeight: 'bold',
+          <XAxis
+            dataKey={xKey}
+            label={{
+              position: 'insideBottomRight',
+              value: xLabel,
+              dx: -5,
+              dy: 20,
             }}
           />
+          <YAxis width="auto" domain={[0, 120]} />
+          <StyledTooltip />
           <Area
             type="monotone"
             name={yLabel}

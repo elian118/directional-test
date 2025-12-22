@@ -29,7 +29,7 @@ function App() {
 
   return (
     <GlobalLayer>
-      <div className="w-screen h-screen dark:text-gray-100 bg-gray-100 dark:bg-gray-800">
+      <div className="w-screen h-screen dark:text-gray-100 bg-gray-100 dark:bg-gray-800 overflow-hidden">
         <div ref={headerRef} className="navbar p-2 bg-base-300 shadow-md">
           <div className="min-w-48">
             <Link to="/" className="btn btn-ghost text-xl">
@@ -37,7 +37,10 @@ function App() {
             </Link>
           </div>
           <div className="w-full flex justify-between items-center">
-            <div style={{ display: getAuthToken() ? 'flex' : 'none' }} className="w-1/2 flex-none">
+            <div
+              style={{ display: getAuthToken() ? 'flex' : 'none' }}
+              className="w-1/2 flex-none"
+            >
               <ul className="menu menu-horizontal px-1">
                 <li>
                   <Link to="/posts" className="btn btn-ghost">
@@ -51,13 +54,20 @@ function App() {
                 </li>
               </ul>
             </div>
-            <button style={{ display: getAuthToken() ? 'flex' : 'none' }} className="btn btn-ghost" onClick={logout}>
+            <button
+              style={{ display: getAuthToken() ? 'flex' : 'none' }}
+              className="btn btn-ghost"
+              onClick={logout}
+            >
               로그아웃
             </button>
           </div>
         </div>
 
-        <main className="p-4" style={{ height: winHeight - headerHeight }}>
+        <main
+          className="p-4 overflow-y-auto"
+          style={{ height: winHeight - headerHeight }}
+        >
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/posts" element={<PostsPage />} />
