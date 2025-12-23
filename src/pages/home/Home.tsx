@@ -1,4 +1,7 @@
 import Login from '../../common/components/Login.tsx';
+import { useEffect } from 'react';
+import { useAuth } from '../../common/hooks/useAuth.ts';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   // const { openModal } = useModal();
@@ -11,6 +14,13 @@ const Home = () => {
   //       </div>
   //     ),
   //   });
+  const navigate = useNavigate();
+  const {user} = useAuth();
+
+
+  useEffect(() => {
+    !!user?.token && navigate('/posts');
+  }, [user])
 
   return (
     <div className="w-full h-full">

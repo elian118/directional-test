@@ -1,18 +1,26 @@
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
 import { delAllPostsApi, getPostApi, getPostsApi } from '../postsApi.ts';
-import { initPostParams, type PostResponse } from '../interfaces/addPostTypes.ts';
-import { AllCommunityModule, InfiniteRowModelModule, ModuleRegistry } from 'ag-grid-community';
+import {
+  initPostParams,
+  type PostResponse,
+} from '../interfaces/addPostTypes.ts';
+import {
+  AllCommunityModule,
+  InfiniteRowModelModule,
+  ModuleRegistry,
+} from 'ag-grid-community';
 import { updateColDeps } from '../utils.ts';
 import { type PostLabels, postLabels } from '../consts/postLabels.ts';
 import { useDimension } from '../../../common/hooks/useDimention.ts';
 import { useModal } from '../../../common/hooks/useModal.ts';
 import TableHeader from './TableHeader.tsx';
 import PostForm from './PostForm.tsx';
-import { initialPostsParams, type PostsParams } from '../interfaces/getPostsTypes.ts';
+import {
+  initialPostsParams,
+  type PostsParams,
+} from '../interfaces/getPostsTypes.ts';
 import { useAsync } from '../../../common/hooks/useAsync.ts';
-import { useLocalStorage } from '../../../common/hooks/useLocalStorage.ts';
-import { initLoginResponse } from '../../../common/types/LoginResponse.ts';
 
 try {
   ModuleRegistry.registerModules([AllCommunityModule, InfiniteRowModelModule]);
@@ -23,14 +31,14 @@ try {
 const Posts = () => {
   const { winHeight } = useDimension();
   const { openModal } = useModal();
-  const [user] = useLocalStorage('user', initLoginResponse);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [params, setParams] = useState<PostsParams>(initialPostsParams);
   const [showCols, setShowCols] = useState<PostLabels[]>(postLabels); // 특정 컬럼 숨김/보기 제어
   const [colDefs, setColDefs] = useState<any>([]);
   const [gridApi, setGridApi] = useState<any>(null);
 
-  const fetchPosts = async (postsParams: PostsParams) => await getPostsApi(postsParams);
+  const fetchPosts = async (postsParams: PostsParams) =>
+    await getPostsApi(postsParams);
   const fetchPost = async (id: string) => await getPostApi(id);
 
   // 전체 삭제
@@ -62,7 +70,12 @@ const Posts = () => {
       .includes(key);
 
   const onChangeShowCol = (key: keyof PostResponse) => {
-    setShowCols(showCols.map((e) => ({ ...e, isShow: e.key === key ? !e.isShow : e.isShow })));
+    setShowCols(
+      showCols.map((e) => ({
+        ...e,
+        isShow: e.key === key ? !e.isShow : e.isShow,
+      })),
+    );
   };
 
   // 샘플 데이터 입력
@@ -98,7 +111,8 @@ const Posts = () => {
             currentNextCursor = res.nextCursor ?? undefined;
 
             let lastRow = -1;
-            if (!res.nextCursor) lastRow = getRowsParams.startRow + rowsThisPage.length;
+            if (!res.nextCursor)
+              lastRow = getRowsParams.startRow + rowsThisPage.length;
 
             getRowsParams.successCallback(rowsThisPage, lastRow);
 
@@ -140,11 +154,15 @@ const Posts = () => {
 
   useAsync(async () => {
     setColDefs(updateColDeps(showCols));
-  }, [showCols, params, user]);
+  }, [showCols, params]);
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <TableHeader isShowCol={isShowCol} onChangeShowCol={onChangeShowCol} onSearchSubmit={handleSearchSubmit} />
+      <TableHeader
+        isShowCol={isShowCol}
+        onChangeShowCol={onChangeShowCol}
+        onSearchSubmit={handleSearchSubmit}
+      />
       {
         <div className="z-0" style={{ height: winHeight - 260 }}>
           <AgGridReact

@@ -1,16 +1,18 @@
 import { Input } from './Input.tsx';
 import { useForm } from 'react-hook-form';
-import { initLoginParams, type LoginParams, loginParamsSchema } from '../schemas/loginParamsSchema.ts';
+import {
+  initLoginParams,
+  type LoginParams,
+  loginParamsSchema,
+} from '../schemas/loginParamsSchema.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Btn from './Btn.tsx';
 import { loginApi } from '../authApi.ts';
 import { useLocalStorage } from '../hooks/useLocalStorage.ts';
-import { initLoginResponse, type LoginResponse } from '../types/LoginResponse.ts';
-import { useNavigate } from 'react-router-dom';
+import { type LoginResponse } from '../types/LoginResponse.ts';
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [, setUser] = useLocalStorage<LoginResponse>('user', initLoginResponse);
+  const [, setUser] = useLocalStorage<LoginResponse | null>('user', null);
 
   const {
     control,
@@ -21,11 +23,13 @@ const Login = () => {
     defaultValues: initLoginParams,
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     try {
       const res = await loginApi(data);
       setUser(res);
-      if (res.token) navigate('/posts');
+      if (res.token) {
+        location.reload(); // 새로고침 후 Auth Hoc 에게 자동 작동 위임
+      }
     } catch (e) {
       console.error(e);
     }
@@ -37,7 +41,9 @@ const Login = () => {
       className="px-4 py-8 w-80 h-84 flex justify-between flex-col gap-4 bg-slate-700 rounded-md shadow-md"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h2 className="mb-2 font-bold text-lg flex items-center justify-center">로그인</h2>
+      <h2 className="mb-2 font-bold text-lg flex items-center justify-center">
+        로그인
+      </h2>
       <div>
         <Input
           name="email"

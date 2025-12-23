@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { GlobalContext, initModal, type ModalState } from '../contexts/global-context.ts';
+import { GlobalContext, initModal, type ModalState } from '../contexts/GlobalContext.ts';
 
 export const useModal = () => {
   const { modalState } = useContext(GlobalContext);

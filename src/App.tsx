@@ -8,8 +8,8 @@ import Modal from './common/components/Modal.tsx';
 import GlobalLayer from './common/components/GlobalLayer.tsx';
 import { useDimension } from './common/hooks/useDimention.ts';
 import { useEffect, useRef, useState } from 'react';
-import { getAuthToken } from './common/getAuthToken.ts';
 import withAuth from './common/hocs/withAuth.tsx';
+import { useAuth } from './common/hooks/useAuth.ts';
 
 // AuthHoc 랩핑 컴포넌트
 const AuthPostsPage = withAuth(PostsPage);
@@ -17,6 +17,8 @@ const AuthChartPage = withAuth(ChartPage);
 
 function App() {
   const { winHeight } = useDimension();
+  const { isAuthenticated, setUser } = useAuth();
+
   const navigate = useNavigate();
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState<number>(0);
@@ -26,7 +28,7 @@ function App() {
   }, [navigate]);
 
   const logout = () => {
-    localStorage.removeItem('user');
+    setUser(null);
     navigate('/');
   };
 
@@ -41,7 +43,7 @@ function App() {
           </div>
           <div className="w-full flex justify-between items-center">
             <div
-              style={{ display: getAuthToken() ? 'flex' : 'none' }}
+              style={{ display: isAuthenticated ? 'flex' : 'none' }}
               className="w-1/2 flex-none"
             >
               <ul className="menu menu-horizontal px-1">
@@ -58,7 +60,7 @@ function App() {
               </ul>
             </div>
             <button
-              style={{ display: getAuthToken() ? 'flex' : 'none' }}
+              style={{ display: isAuthenticated ? 'flex' : 'none' }}
               className="btn btn-ghost"
               onClick={logout}
             >
