@@ -1,5 +1,7 @@
-import { type ReactNode, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { GlobalContext, type GlobalContextType, initModal, type ModalState } from '../contexts/global-context.ts';
+import { useLocalStorage } from '../hooks/useLocalStorage.ts';
+import { initLoginResponse, type LoginResponse } from '../types/LoginResponse.ts';
 
 const GlobalLayer = ({ children }: { children: ReactNode }) => {
   // 빠른 개발을 위해 다크모드 고정
@@ -14,6 +16,12 @@ const GlobalLayer = ({ children }: { children: ReactNode }) => {
     isOpenMobileMenuState: [isOpenMobileMenu, setIsOpenMobileMenu],
     modalState: [modal, setModal],
   };
+
+  const [user] = useLocalStorage<LoginResponse>('user', initLoginResponse);
+
+  useEffect(() => {
+    //
+  }, [user]);
 
   return (
     <GlobalContext.Provider value={value}>

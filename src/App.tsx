@@ -9,17 +9,20 @@ import GlobalLayer from './common/components/GlobalLayer.tsx';
 import { useDimension } from './common/hooks/useDimention.ts';
 import { useEffect, useRef, useState } from 'react';
 import { getAuthToken } from './common/getAuthToken.ts';
+import withAuth from './common/hocs/withAuth.tsx';
+
+// AuthHoc 랩핑 컴포넌트
+const AuthPostsPage = withAuth(PostsPage);
+const AuthChartPage = withAuth(ChartPage);
 
 function App() {
   const { winHeight } = useDimension();
   const navigate = useNavigate();
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState<number>(0);
-  // const [user, setUser] = useLocalStorage<LoginResponse>('user', initLoginResponse);
 
   useEffect(() => {
     if (headerRef.current) setHeaderHeight(headerRef.current.offsetHeight);
-    if (!getAuthToken()) navigate('/');
   }, [navigate]);
 
   const logout = () => {
@@ -70,8 +73,8 @@ function App() {
         >
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/posts" element={<PostsPage />} />
-            <Route path="/charts" element={<ChartPage />} />
+            <Route path="/posts" element={<AuthPostsPage />} />
+            <Route path="/charts" element={<AuthChartPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
           <Modal />
