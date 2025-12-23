@@ -30,6 +30,7 @@ function App() {
   const logout = () => {
     setUser(null);
     navigate('/');
+    localStorage.removeItem('user'); // 저장소 내용 완전 비우기
   };
 
   return (
