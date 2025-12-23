@@ -42,7 +42,7 @@ const MultiLine = ({ dataSet }: MultiLineProps) => {
           departs.map((depart, idx) => (
             <div
               key={`depart-${getDepartData(depart)}`}
-              className="w-full md:w-3/4 xl:w-9/12 px-24 absolute top-0 mx-auto"
+              className="w-full md:w-3/4 xl:w-9/12 px-24 mx-auto absolute top-0"
             >
               <LineChart
                 style={{
@@ -56,9 +56,9 @@ const MultiLine = ({ dataSet }: MultiLineProps) => {
                 data={getSeriesData(depart)}
                 margin={{
                   top: 10,
-                  right: idx === 0 ? 10 : 62,
-                  left: idx === 0 ? 10 : 71,
-                  bottom: idx === 0 ? 17 : 65,
+                  right: idx === 0 ? xKey === 'cups' ? 10 : 1 : 62,
+                  left: idx === 0 ? xKey === 'cups' ? 10 : 27 : 71,
+                  bottom: idx === 0 ? 17 : 71,
                 }}
               >
                 {idx === 0 && <CartesianGrid strokeDasharray="3 3" />}
@@ -76,7 +76,7 @@ const MultiLine = ({ dataSet }: MultiLineProps) => {
                   yAxisId="leftId"
                   name={yLabel}
                   label={{
-                    position: 'insideTopLeft',
+                    position: 'top',
                     value: yLabel,
                     dx: 0,
                     dy: 80,
@@ -93,7 +93,7 @@ const MultiLine = ({ dataSet }: MultiLineProps) => {
                   yAxisId="rightId"
                   name={yLabel2}
                   label={{
-                    position: 'insideTopRight',
+                    position: 'top',
                     value: yLabel2,
                     dx: 0,
                     dy: 50,

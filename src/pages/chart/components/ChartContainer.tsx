@@ -12,6 +12,7 @@ import StackedBarAndArea from './StackedBarAndArea.tsx';
 import MultiLine from './MultiLine.tsx';
 import type { CoffeeTeam } from '../interfaces/teamTypes.ts';
 import type { SnackImpactResponse } from '../interfaces/departmentTypes.ts';
+import { usePrevious } from '../../../common/hooks/usePrevious.ts';
 
 const initChartData: ChartData = {
   title: '',
@@ -66,7 +67,20 @@ const ChartContainer = () => {
     setData({ ...rest, data });
   };
 
+  // 이전 데이터셋 인덱스 저장 → 추적용
+  const prevDataSetIdx = usePrevious(dataSetIdx);
+
   useAsync(async () => {
+    /*
+      차트 유형이 멀티라인으로 바뀔 때만 컨테이너 리랜더링 유도
+        DEBUG 2, 3 인덱스 차트 데이터가 잔류 시 4, 5 차트 랜더링에 영향 줌 → 의도하지 않은 차트가 그려짐
+      원인: 2~3 차트와 4~5 차트 유형이 비슷하기 때문에 잔류 데이터가 추가 차트 생성 야기
+        그 외 케이스는 데이터셋 전환 시 부드럽게 차트가 변하는 애니메이션을 살리기 위해 컨테이너 리랜더링 차단
+     */
+    const isTransitionToMultiLine =
+      (prevDataSetIdx === 2 || prevDataSetIdx === 3) && (dataSetIdx === 4 || dataSetIdx === 5);
+
+    isTransitionToMultiLine && setData(initChartData); // 잔류 데이터 제거 및 리렌더링 유도
     dataSetIdx < 4 ? await getData() : await getSeriesData();
   }, [dataSetIdx]);
 

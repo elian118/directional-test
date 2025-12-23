@@ -24,7 +24,7 @@ const BarAndDonut = ({ dataSet }: BarAndDonutProps) => {
       ...e,
       color: tealColors[tealColors.length - 5 - idx],
     }));
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setSelectedData(coloredData);
   }, [dataSet]);
 
